@@ -21,20 +21,12 @@
 
     <input type="date" id="dataAgendamento" 
     class="p-3 rounded-2xl w-full max-w-md mx-auto block shadow-lg text-center">
-
-    
-  </div>
-
-  <!-- Botão principal -->
-  <div class="flex justify-center mb-10">
-    <a href="https://agendas.link/feffabeautystudio" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition hover:scale-105">
-      💬 Agende aqui
-    </a>
   </div>
 
   <!-- Cards -->
   <section class="grid md:grid-cols-3 gap-6 px-6 pb-12">
 
+    <!-- Serviço Avulso -->
     <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
       <h2 class="text-2xl font-bold text-pink-600 mb-4">Serviço Avulso</h2>
       <p class="text-gray-700">Cabelo curto e médio</p>
@@ -47,6 +39,7 @@
       </button>
     </div>
 
+    <!-- Pacote 1x semana -->
     <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
       <h2 class="text-2xl font-bold text-purple-600 mb-4">1x por semana</h2>
       <p class="text-gray-700">Curto/Médio: R$ 65,00</p>
@@ -60,6 +53,7 @@
       </button>
     </div>
 
+    <!-- Pacote 2x semana -->
     <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
       <h2 class="text-2xl font-bold text-purple-600 mb-4">2x por semana</h2>
       <p class="text-gray-700">Curto/Médio: R$ 50,00</p>
@@ -73,6 +67,41 @@
       </button>
     </div>
 
+    <!-- NOVOS SERVIÇOS -->
+
+    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
+      <h2 class="text-2xl font-bold text-pink-600 mb-4">Hidratação</h2>
+      <p class="text-gray-700">Tratamento completo</p>
+      <p class="text-3xl font-bold mt-3">R$ 145,00</p>
+
+      <button onclick="enviarWhats('Hidratação capilar')" 
+      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
+        Agendar
+      </button>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
+      <h2 class="text-2xl font-bold text-pink-600 mb-4">Corte</h2>
+      <p class="text-gray-700">Corte profissional</p>
+      <p class="text-3xl font-bold mt-3">R$ 80,00</p>
+
+      <button onclick="enviarWhats('Corte de cabelo')" 
+      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
+        Agendar
+      </button>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
+      <h2 class="text-2xl font-bold text-pink-600 mb-4">Escova Premium</h2>
+      <p class="text-gray-700">Finalização perfeita</p>
+      <p class="text-3xl font-bold mt-3">R$ 120,00</p>
+
+      <button onclick="enviarWhats('Escova Premium')" 
+      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
+        Agendar
+      </button>
+    </div>
+
   </section>
 
   <!-- Botão flutuante WhatsApp -->
@@ -81,12 +110,19 @@
      💬
   </a>
 
+  <!-- CONTATO (AGORA EMBAIXO) -->
+  <section class="text-center pb-12">
+    <a href="https://agendas.link/feffabeautystudio" target="_blank" 
+    class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition hover:scale-105">
+      💬 Agende aqui
+    </a>
+  </section>
+
   <!-- Script -->
   <script>
     function montarMensagem(servico){
       let nome = document.getElementById("nomeCliente").value;
       let data = document.getElementById("dataAgendamento").value;
-      
 
       if(nome === ""){
         alert("Digite seu nome 😄");
@@ -100,7 +136,7 @@
       let mensagem = montarMensagem(servico);
       if(!mensagem) return;
 
-      let url = "https://wa.me/5549991273818?text=" + encodeURIComponent(mensagem);
+      let url = "https://wa.me/5549999748347?text=" + encodeURIComponent(mensagem);
       window.open(url, "_blank");
     }
 
@@ -108,7 +144,7 @@
       let mensagem = montarMensagem('um atendimento');
       if(!mensagem) return;
 
-      let url = "https://wa.me/5549991273818?text=" + encodeURIComponent(mensagem);
+      let url = "https://wa.me/5549999748347?text=" + encodeURIComponent(mensagem);
       window.open(url, "_blank");
     }
   </script>
@@ -118,7 +154,7 @@
     © 2026 Bia Hair Studio
   </footer>
 
-  <!-- Animação simples -->
+  <!-- Animação -->
   <style>
     .animate-fade { animation: fadeIn 1s ease-in-out; }
     @keyframes fadeIn {
