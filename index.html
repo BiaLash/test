@@ -3,165 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bia - Lavar & Escovar</title>
+  <title>Bia Hair | Agendamentos</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-pink-100 to-purple-200 font-sans">
+<body class="bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 min-h-screen font-sans text-gray-800">
 
-  <!-- Header -->
-  <header class="text-center py-10 animate-fade">
-    <h1 class="text-4xl md:text-5xl font-bold text-purple-800">Bia Hair Studio</h1>
-    <p class="text-lg text-gray-700 mt-2">Pacotes de Lavar & Escovar</p>
-  </header>
+  <!-- Modal -->
+  <div id="modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-md relative animate-[fadeIn_.3s_ease] mt-10">
+      <button onclick="fecharModal()" class="absolute top-4 right-5 text-2xl text-gray-400 hover:text-gray-700">×</button>
 
-  <!-- Campo nome + data -->
-  <div class="px-6 mb-8 space-y-4">
-    <input id="nomeCliente" placeholder="Digite seu nome..." 
-    class="p-3 rounded-2xl w-full max-w-md mx-auto block shadow-lg text-center">
+      <h2 class="text-2xl font-bold text-blue-700 mb-5 text-center">Agende seu horário ✨</h2>
 
-    <input type="date" id="dataAgendamento" 
-    class="p-3 rounded-2xl w-full max-w-md mx-auto block shadow-lg text-center">
+      <input id="nome" type="text" placeholder="Digite seu nome" class="w-full border border-gray-200 rounded-2xl p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-300">
+
+      <input id="data" type="date" class="w-full border border-gray-200 rounded-2xl p-3 mb-5 focus:outline-none focus:ring-2 focus:ring-blue-300">
+
+      <button onclick="enviar()" class="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-3 rounded-2xl transition">
+        Continuar para o WhatsApp
+      </button>
+    </div>
   </div>
 
-  <!-- Cards -->
-  <section class="grid md:grid-cols-3 gap-6 px-6 pb-12">
+  <!-- Modal de Contato -->
+  <div id="modalContato" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-md relative mt-10">
+      <button onclick="fecharContato()" class="absolute top-4 right-5 text-2xl text-gray-400 hover:text-gray-700">×</button>
 
-    <!-- Serviço Avulso -->
-    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
-      <h2 class="text-2xl font-bold text-pink-600 mb-4">Serviço Avulso</h2>
-      <p class="text-gray-700">Cabelo curto e médio</p>
-      <p class="text-3xl font-bold mt-3">R$ 75,00</p>
-      <p class="text-gray-700 mt-2">Cabelo longo: R$ 95,00</p>
+      <h2 class="text-2xl font-bold text-blue-700 mb-5 text-center">Fale conosco 💬</h2>
 
-      <button onclick="enviarWhats('Serviço Avulso')" 
-      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
-        Agendar
+      <input id="nomeContato" type="text" placeholder="Seu nome" class="w-full border border-gray-200 rounded-2xl p-3 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-300">
+
+      <textarea id="duvidaContato" placeholder="Escreva sua dúvida ou mensagem" class="w-full border border-gray-200 rounded-2xl p-3 mb-5 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+
+      <button onclick="enviarContato()" class="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-3 rounded-2xl transition">
+        Enviar pelo WhatsApp
       </button>
     </div>
+  </div>
 
-    <!-- Pacote 1x semana -->
-    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
-      <h2 class="text-2xl font-bold text-purple-600 mb-4">1x por semana</h2>
-      <p class="text-gray-700">Curto/Médio: R$ 65,00</p>
-      <p class="text-gray-700">Total: R$ 260,00</p>
-      <p class="text-gray-700 mt-2">Longo: R$ 75,00</p>
-      <p class="text-gray-700">Total: R$ 300,00</p>
+  <!-- Cabeçalho -->
+  <header class="text-center py-12 px-4">
+    <h1 class="text-5xl font-bold text-blue-700">Bia Hair </h1>
+    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+      Cuidado, beleza e praticidade para o seu dia a dia.
+    </p>
+  </header>
 
-      <button onclick="enviarWhats('Pacote 1x por semana')" 
-      class="mt-4 w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 rounded-xl">
-        Agendar
-      </button>
+  <!-- Serviços -->
+  <section class="max-w-7xl mx-auto px-6 pb-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:-translate-y-1 hover:shadow-2xl transition">
+      <h2 class="text-2xl font-bold text-blue-500 mb-3">Serviço Avulso</h2>
+      <p class="text-gray-600 mb-4">Lavagem e escova para cabelos curtos e médios.</p>
+      <p class="text-3xl font-bold mb-5">R$ 75,00</p>
+      <button onclick="abrirModal('Serviço Avulso')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold">Agendar Atendimento</button>
     </div>
 
-    <!-- Pacote 2x semana -->
-    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
-      <h2 class="text-2xl font-bold text-purple-600 mb-4">2x por semana</h2>
-      <p class="text-gray-700">Curto/Médio: R$ 50,00</p>
-      <p class="text-gray-700">Total: R$ 400,00</p>
-      <p class="text-gray-700 mt-2">Longo: R$ 60,00</p>
-      <p class="text-gray-700">Total: R$ 480,00</p>
-
-      <button onclick="enviarWhats('Pacote 2x por semana')" 
-      class="mt-4 w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 rounded-xl">
-        Agendar
-      </button>
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:-translate-y-1 hover:shadow-2xl transition">
+      <h2 class="text-2xl font-bold text-blue-500 mb-3">Cabelo Longo</h2>
+      <p class="text-gray-600 mb-4">Lavagem e escova para cabelos longos.</p>
+      <p class="text-3xl font-bold mb-5">R$ 95,00</p>
+      <button onclick="abrirModal('Cabelo Longo')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold">Agendar Atendimento</button>
     </div>
 
-    <!-- NOVOS SERVIÇOS -->
-
-    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
-      <h2 class="text-2xl font-bold text-pink-600 mb-4">Hidratação</h2>
-      <p class="text-gray-700">Tratamento completo</p>
-      <p class="text-3xl font-bold mt-3">R$ 145,00</p>
-
-      <button onclick="enviarWhats('Hidratação capilar')" 
-      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
-        Agendar
-      </button>
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:-translate-y-1 hover:shadow-2xl transition">
+      <h2 class="text-2xl font-bold text-blue-500 mb-3">Corte</h2>
+      <p class="text-gray-600 mb-4">Corte feminino com acabamento.</p>
+      <p class="text-3xl font-bold mb-5">R$ 80,00</p>
+      <button onclick="abrirModal('Corte')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold">Agendar Atendimento</button>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
-      <h2 class="text-2xl font-bold text-pink-600 mb-4">Corte</h2>
-      <p class="text-gray-700">Corte profissional</p>
-      <p class="text-3xl font-bold mt-3">R$ 80,00</p>
-
-      <button onclick="enviarWhats('Corte de cabelo')" 
-      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
-        Agendar
-      </button>
-    </div>
-
-    <div class="bg-white rounded-2xl shadow-xl p-6 hover:scale-105 transition">
-      <h2 class="text-2xl font-bold text-pink-600 mb-4">Escova Premium</h2>
-      <p class="text-gray-700">Finalização perfeita</p>
-      <p class="text-3xl font-bold mt-3">R$ 120,00</p>
-
-      <button onclick="enviarWhats('Escova Premium')" 
-      class="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl">
-        Agendar
-      </button>
+    <div class="bg-white rounded-3xl shadow-lg p-6 hover:-translate-y-1 hover:shadow-2xl transition">
+      <h2 class="text-2xl font-bold text-blue-500 mb-3">Escova + Babyliss</h2>
+      <p class="text-gray-600 mb-4">Escova modelada com babyliss.</p>
+      <p class="text-3xl font-bold mb-5">R$ 100,00</p>
+      <button onclick="abrirModal('Escova + Babyliss')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold">Agendar Atendimento</button>
     </div>
 
   </section>
 
-  <!-- Botão flutuante WhatsApp -->
-  <a href="#" onclick="abrirWhatsFlutuante()" 
-     class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl text-2xl animate-bounce">
-     💬
-  </a>
+  <!-- Pacotes -->
+  <section class="max-w-6xl mx-auto px-6 pb-12">
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+      <h2 class="text-3xl font-bold text-center text-blue-700 mb-8">Pacotes Mensais</h2>
 
-  <!-- CONTATO (AGORA EMBAIXO) -->
-  <section class="text-center pb-12">
-    <a href="https://agendas.link/feffabeautystudio" target="_blank" 
-    class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition hover:scale-105">
-      💬 Agende aqui
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <div>
+          <h3 class="text-2xl font-semibold text-blue-500 mb-4">Cabelos Curtos e Médios</h3>
+
+          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-4">
+            <p class="font-semibold">1 vez por semana</p>
+            <p>R$ 65,00 por sessão</p>
+            <p class="font-bold mt-1 mb-4">Total mensal: R$ 260,00</p>
+            <button onclick="abrirModal('Pacote mensal - Cabelos curtos e médios (1 vez por semana)')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold transition">
+              Agendar Pacote
+            </button>
+          </div>
+
+          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+            <p class="font-semibold">2 vezes por semana</p>
+            <p>R$ 50,00 por sessão</p>
+            <p class="font-bold mt-1 mb-4">Total mensal: R$ 400,00</p>
+            <button onclick="abrirModal('Pacote mensal - Cabelos curtos e médios (2 vezes por semana)')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold transition">
+              Agendar Pacote
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-semibold text-blue-600 mb-4">Cabelos Longos</h3>
+
+          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-4">
+            <p class="font-semibold">1 vez por semana</p>
+            <p>R$ 75,00 por sessão</p>
+            <p class="font-bold mt-1 mb-4">Total mensal: R$ 300,00</p>
+            <button onclick="abrirModal('Pacote mensal - Cabelos longos (1 vez por semana)')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold transition">
+              Agendar Pacote
+            </button>
+          </div>
+
+          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5">
+            <p class="font-semibold">2 vezes por semana</p>
+            <p>R$ 60,00 por sessão</p>
+            <p class="font-bold mt-1 mb-4">Total mensal: R$ 480,00</p>
+            <button onclick="abrirModal('Pacote mensal - Cabelos longos (2 vezes por semana)')" class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-2xl font-semibold transition">
+              Agendar Pacote
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-10 border-t pt-8">
+        <h3 class="text-2xl font-semibold text-blue-700 mb-4">Adicionais</h3>
+        <ul class="space-y-2 text-gray-700 text-lg">
+          <li>• Hidratação capilar: + R$ 145,00</li>
+          <li>• Corte: + R$ 80,00</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Botão flutuante -->
+  <button onclick="abrirContato()" class="fixed bottom-6 right-6 bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-full shadow-2xl font-semibold">
+    💬 Fale conosco
+  </button>
+
+  <!-- Rodapé -->
+  <footer class="text-center py-10 text-gray-600 px-4">
+    <a href="https://www.instagram.com/biaa.roficial?igsh=Mzh2ZWxncmh1djE0" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-2xl shadow-md hover:shadow-xl transition mb-4 text-blue-600 font-semibold">
+      @biaa.roficial
     </a>
-  </section>
 
-  <!-- Script -->
-  <script>
-    function montarMensagem(servico){
-      let nome = document.getElementById("nomeCliente").value;
-      let data = document.getElementById("dataAgendamento").value;
-
-      if(nome === ""){
-        alert("Digite seu nome 😄");
-        return null;
-      }
-
-      return `Olá, meu nome é ${nome} e quero agendar ${servico} para ${data}`;
-    }
-
-    function enviarWhats(servico) {
-      let mensagem = montarMensagem(servico);
-      if(!mensagem) return;
-
-      let url = "https://wa.me/5549999748347?text=" + encodeURIComponent(mensagem);
-      window.open(url, "_blank");
-    }
-
-    function abrirWhatsFlutuante(){
-      let mensagem = montarMensagem('um atendimento');
-      if(!mensagem) return;
-
-      let url = "https://wa.me/5549999748347?text=" + encodeURIComponent(mensagem);
-      window.open(url, "_blank");
-    }
-  </script>
-
-  <!-- Footer -->
-  <footer class="text-center py-6 text-gray-600">
-    © 2026 Bia Hair Studio
+    <p class="mb-2">WhatsApp do salão: (49) 99127-3818</p>
+    <p>© 2026 Bia Hair Studio – Todos os direitos reservados.</p>
   </footer>
 
-  <!-- Animação -->
-  <style>
-    .animate-fade { animation: fadeIn 1s ease-in-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+  <script>
+    let servicoAtual = '';
+
+    function abrirModal(servico) {
+      servicoAtual = servico;
+      document.getElementById('modal').classList.remove('hidden');
     }
-  </style>
+
+    function fecharModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    function abrirContato() {
+      document.getElementById('modalContato').classList.remove('hidden');
+    }
+
+    function fecharContato() {
+      document.getElementById('modalContato').classList.add('hidden');
+    }
+
+    function enviar() {
+      const nome = document.getElementById('nome').value;
+      const data = document.getElementById('data').value;
+
+      if (!nome || !data) {
+        alert('Por favor, preencha seu nome e escolha uma data.');
+        return;
+      }
+
+      let mensagem = '';
+
+      if (servicoAtual.toLowerCase().includes('pacote')) {
+        mensagem = `Olá! Meu nome é ${nome} e gostaria de contratar o ${servicoAtual}. Gostaria de agendar para começar no dia ${data}.`;
+      } else {
+        mensagem = `Olá! Meu nome é ${nome} e gostaria de agendar o serviço "${servicoAtual}" para o dia ${data}.`;
+      }
+      window.open('https://wa.me/5549991273818?text=' + encodeURIComponent(mensagem), '_blank');
+    }
+
+    function enviarContato() {
+      const nome = document.getElementById('nomeContato').value;
+      const duvida = document.getElementById('duvidaContato').value;
+
+      if (!nome || !duvida) {
+        alert('Por favor, preencha seu nome e escreva sua dúvida.');
+        return;
+      }
+
+      const mensagem = `Olá! Meu nome é ${nome}. Tenho a seguinte dúvida: ${duvida}`;
+      window.open('https://wa.me/5549991273818?text=' + encodeURIComponent(mensagem), '_blank');
+      fecharContato();
+    }
+  </script>
 
 </body>
 </html>
