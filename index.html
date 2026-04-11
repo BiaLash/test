@@ -1,173 +1,249 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bia Hair | Agendamentos</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bia Hair</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 min-h-screen font-sans text-gray-800">
+<body class="bg-[#021B1A] text-white font-sans">
 
-<!-- MODAL FOTOS (SÓ SERVIÇOS) -->
-<div id="fotos" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-  <div class="bg-white p-6 rounded-2xl max-w-xl w-full relative">
+<!-- BOTÃO ADMIN -->
+<button onclick="toggleAdmin()" 
+class="fixed left-3 top-1/2 -translate-y-1/2 bg-yellow-400 text-black px-3 py-2 rounded-full z-50">
+⚙️
+</button>
 
-    <button onclick="fecharFotos()" class="absolute top-3 right-4 text-2xl">✕</button>
+<!-- ADMIN -->
+<div id="adminPanel" class="hidden fixed left-0 top-0 h-full w-72 bg-black p-4 overflow-y-auto z-40">
 
-    <h2 id="titulo" class="text-center font-bold text-lg mb-4"></h2>
+<h2 class="text-yellow-400 text-xl mb-4">ADM</h2>
 
-    <div class="grid grid-cols-2 gap-3">
-      <img id="img1" class="rounded-lg">
-      <img id="img2" class="rounded-lg">
-      <img id="img3" class="rounded-lg">
-      <img id="img4" class="rounded-lg">
-    </div>
+<input id="senhaInput" type="password" placeholder="Senha" class="w-full p-2 mb-3 text-black">
+<button onclick="login()" class="w-full mb-3 bg-blue-500 p-2">Entrar</button>
 
-    <button onclick="irAgendar()" class="mt-5 w-full bg-blue-500 text-white p-3 rounded-xl">
-      Continuar para agendamento
-    </button>
+<div id="adminConteudo" class="hidden">
 
-  </div>
+<button onclick="verClientes()" class="w-full mb-2 bg-gray-800 p-2">Clientes</button>
+<button onclick="configPacote()" class="w-full mb-2 bg-gray-800 p-2">Pacotes</button>
+<button onclick="trocarSenha()" class="w-full mb-2 bg-gray-800 p-2">Senha</button>
+
+<div id="conteudoInterno" class="mt-4 text-sm"></div>
+
 </div>
-
-<!-- MODAL AGENDAMENTO -->
-<div id="modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-  <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-md relative">
-    <button onclick="fecharModal()" class="absolute top-4 right-5 text-2xl">×</button>
-
-    <h2 class="text-2xl font-bold text-blue-700 mb-5 text-center">Agende seu horário ✨</h2>
-
-    <input id="nome" type="text" placeholder="Digite seu nome" class="w-full border rounded-2xl p-3 mb-3">
-    <input id="data" type="date" class="w-full border rounded-2xl p-3 mb-5">
-
-    <button onclick="enviar()" class="w-full bg-blue-400 text-white py-3 rounded-2xl">
-      Continuar para o WhatsApp
-    </button>
-  </div>
 </div>
 
 <!-- HEADER -->
-<header class="text-center py-12 px-4">
-  <img src="logo.png" class="mx-auto mb-4 w-24">
-  <h1 class="text-5xl font-bold text-blue-700"></h1>
+<header class="text-center py-10">
+<img src="logo.png" class="mx-auto w-24 mb-4">
+<h1 class="text-4xl font-bold">Bia Hair</h1>
 </header>
 
 <!-- SERVIÇOS -->
-<section class="max-w-7xl mx-auto px-6 pb-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
 
-  <div class="bg-white p-6 rounded-3xl shadow-lg">
-    <h2 class="font-bold text-blue-500">Serviço Avulso</h2>
-    <button onclick="abrirServico('Serviço Avulso')" class="w-full bg-blue-400 text-white mt-4 p-2 rounded">Agendar</button>
-  </div>
-
-  <div class="bg-white p-6 rounded-3xl shadow-lg">
-    <h2 class="font-bold text-blue-500">Cabelo Longo</h2>
-    <button onclick="abrirServico('Cabelo Longo')" class="w-full bg-blue-400 text-white mt-4 p-2 rounded">Agendar</button>
-  </div>
-
-  <div class="bg-white p-6 rounded-3xl shadow-lg">
-    <h2 class="font-bold text-blue-500">Corte</h2>
-    <button onclick="abrirServico('Corte')" class="w-full bg-blue-400 text-white mt-4 p-2 rounded">Agendar</button>
-  </div>
-
-  <div class="bg-white p-6 rounded-3xl shadow-lg">
-    <h2 class="font-bold text-blue-500">Escova + Babyliss</h2>
-    <button onclick="abrirServico('Escova + Babyliss')" class="w-full bg-blue-400 text-white mt-4 p-2 rounded">Agendar</button>
-  </div>
+<div onclick="abrirFotos('Corte')" class="bg-[#033] p-4 rounded">Corte</div>
+<div onclick="abrirFotos('Escova')" class="bg-[#033] p-4 rounded">Escova</div>
+<div onclick="abrirFotos('Babyliss')" class="bg-[#033] p-4 rounded">Babyliss</div>
+<div onclick="abrirFotos('Longo')" class="bg-[#033] p-4 rounded">Cabelo Longo</div>
 
 </section>
 
-<!-- PACOTES (SEM FOTO) -->
-<section class="max-w-6xl mx-auto px-6 pb-12">
-
-  <h2 class="text-3xl font-bold text-center text-blue-700 mb-8">Pacotes Mensais</h2>
-
-  <div class="grid md:grid-cols-2 gap-6">
-
-    <div class="bg-white p-6 rounded-3xl shadow-lg">
-      <h3 class="font-bold text-blue-500">Curtos/Médios - 1x semana</h3>
-      <p class="mb-2">R$ 260/mês</p>
-      <button onclick="abrirPacote('Pacote curto 1x')" class="w-full bg-blue-400 text-white p-2 rounded">Agendar</button>
-    </div>
-
-    <div class="bg-white p-6 rounded-3xl shadow-lg">
-      <h3 class="font-bold text-blue-500">Curtos/Médios - 2x semana</h3>
-      <p class="mb-2">R$ 400/mês</p>
-      <button onclick="abrirPacote('Pacote curto 2x')" class="w-full bg-blue-400 text-white p-2 rounded">Agendar</button>
-    </div>
-
-    <div class="bg-white p-6 rounded-3xl shadow-lg">
-      <h3 class="font-bold text-blue-500">Longos - 1x semana</h3>
-      <p class="mb-2">R$ 300/mês</p>
-      <button onclick="abrirPacote('Pacote longo 1x')" class="w-full bg-blue-400 text-white p-2 rounded">Agendar</button>
-    </div>
-
-    <div class="bg-white p-6 rounded-3xl shadow-lg">
-      <h3 class="font-bold text-blue-500">Longos - 2x semana</h3>
-      <p class="mb-2">R$ 480/mês</p>
-      <button onclick="abrirPacote('Pacote longo 2x')" class="w-full bg-blue-400 text-white p-2 rounded">Agendar</button>
-    </div>
-
-  </div>
-
+<!-- PACOTES -->
+<section class="p-6">
+<h2 class="text-xl mb-4">Pacotes</h2>
+<div id="listaPacotes"></div>
 </section>
+
+<!-- MODAL FOTOS -->
+<div id="fotos" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+<div class="bg-white text-black p-6 rounded">
+<button onclick="fecharFotos()">X</button>
+<h2 id="titulo"></h2>
+
+<div class="grid grid-cols-2 gap-2">
+<img src="foto1.jpg">
+<img src="foto2.jpg">
+<img src="foto3.jpg">
+<img src="foto4.jpg">
+</div>
+
+<button onclick="irAgendar()" class="bg-blue-500 text-white p-2 mt-2 w-full">Agendar</button>
+</div>
+</div>
+
+<!-- AGENDAR -->
+<div id="modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+<div class="bg-white text-black p-6 rounded">
+<input id="nome" placeholder="Nome" class="border p-2 w-full mb-2">
+<input id="data" type="date" class="border p-2 w-full mb-2">
+<button onclick="enviar()" class="bg-blue-500 text-white p-2 w-full">Continuar</button>
+</div>
+</div>
+
+<!-- PAGAMENTO -->
+<div id="pagamento" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+<div class="bg-white text-black p-6 rounded">
+
+<h2>Pagamento</h2>
+
+<button onclick="pix()">Pix</button>
+<button onclick="alert('Pagar no local')">Dinheiro</button>
+<button onclick="alert('Pagar no local')">Cartão</button>
+
+<div id="pixArea" class="hidden mt-4">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=josearmandocarpintero2000@gmail.com">
+<input type="file" id="comprovante">
+<button onclick="confirmarPix()">Confirmar</button>
+</div>
+
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div id="avaliacao" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+<div class="bg-white text-black p-6 rounded text-center">
+
+<h2>Avalie</h2>
+
+<div id="estrelas" class="text-3xl">
+<span onclick="avaliar(1)">⭐</span>
+<span onclick="avaliar(2)">⭐</span>
+<span onclick="avaliar(3)">⭐</span>
+<span onclick="avaliar(4)">⭐</span>
+<span onclick="avaliar(5)">⭐</span>
+</div>
+
+<button onclick="enviarAvaliacao()" class="mt-4 bg-green-500 text-white p-2 w-full">
+Enviar
+</button>
+
+</div>
+</div>
 
 <script>
-let servicoAtual = '';
+let servicoAtual='';
+let nota=0;
 
-// SERVIÇOS (COM FOTO)
-function abrirServico(servico) {
-  servicoAtual = servico;
-  document.getElementById('titulo').innerText = servico;
+// ADMIN
+let senhaAdmin = localStorage.getItem('senhaAdmin') || "1234";
 
-  if(servico === 'Serviço Avulso'){
-    img1.src='avulso1.jpg'; img2.src='avulso2.jpg'; img3.src='avulso3.jpg'; img4.src='avulso4.jpg';
-  }
-  if(servico === 'Cabelo Longo'){
-    img1.src='longo1.jpg'; img2.src='longo2.jpg'; img3.src='longo3.jpg'; img4.src='longo4.jpg';
-  }
-  if(servico === 'Corte'){
-    img1.src='corte1.jpg'; img2.src='corte2.jpg'; img3.src='corte3.jpg'; img4.src='corte4.jpg';
-  }
-  if(servico === 'Escova + Babyliss'){
-    img1.src='baby1.jpg'; img2.src='baby2.jpg'; img3.src='baby3.jpg'; img4.src='baby4.jpg';
-  }
-
-  document.getElementById('fotos').classList.remove('hidden');
+function toggleAdmin(){
+adminPanel.classList.toggle('hidden');
 }
 
-// PACOTES (SEM FOTO)
-function abrirPacote(pacote){
-  servicoAtual = pacote;
-  document.getElementById('modal').classList.remove('hidden');
+function login(){
+if(senhaInput.value===senhaAdmin){
+adminConteudo.classList.remove('hidden');
+senhaInput.style.display='none';
+}else alert("Senha errada");
 }
 
-function fecharFotos(){
-  document.getElementById('fotos').classList.add('hidden');
+// CLIENTES
+function verClientes(){
+let clientes=JSON.parse(localStorage.getItem('clientes'))||[];
+let html="";
+clientes.forEach(c=>{
+html+=`<div class="bg-gray-800 p-2 mb-2">
+<b>${c.nome}</b><br>${c.servico}<br>${c.data}<br>Última: ${c.ultimaVisita}
+</div>`;
+});
+conteudoInterno.innerHTML=html;
 }
 
-function irAgendar(){
-  fecharFotos();
-  document.getElementById('modal').classList.remove('hidden');
+// PACOTES
+function configPacote(){
+let pacotes=JSON.parse(localStorage.getItem('pacotes'))||[];
+let html="";
+pacotes.forEach(p=>html+=`<div class="bg-gray-800 p-2 mb-2">${p}</div>`);
+html+=`<input id="novoPacote" class="text-black w-full mb-2"><button onclick="addPacote()">Add</button>`;
+conteudoInterno.innerHTML=html;
 }
 
-function fecharModal(){
-  document.getElementById('modal').classList.add('hidden');
+function addPacote(){
+let p=document.getElementById('novoPacote').value;
+let pacotes=JSON.parse(localStorage.getItem('pacotes'))||[];
+pacotes.push(p);
+localStorage.setItem('pacotes',JSON.stringify(pacotes));
+configPacote();
+carregarPacotes();
 }
 
+// SENHA
+function trocarSenha(){
+conteudoInterno.innerHTML=`<input id="novaSenha" class="text-black w-full"><button onclick="salvarSenha()">Salvar</button>`;
+}
+
+function salvarSenha(){
+localStorage.setItem('senhaAdmin',document.getElementById('novaSenha').value);
+alert("Senha alterada");
+}
+
+// SERVIÇOS
+function abrirFotos(s){
+servicoAtual=s;
+titulo.innerText=s;
+fotos.style.display='flex';
+}
+function fecharFotos(){fotos.style.display='none';}
+function irAgendar(){fecharFotos();modal.style.display='flex';}
+
+// AGENDAR
 function enviar(){
-  const nome = document.getElementById('nome').value;
-  const data = document.getElementById('data').value;
+let nome=document.getElementById('nome').value;
+let data=document.getElementById('data').value;
 
-  if(!nome || !data){
-    alert('Preencha tudo');
-    return;
-  }
+let clientes=JSON.parse(localStorage.getItem('clientes'))||[];
 
-  let msg = `Olá! Meu nome é ${nome} e quero ${servicoAtual} no dia ${data}`;
-  window.open('https://wa.me/5549991273818?text=' + encodeURIComponent(msg));
+clientes.push({
+nome,
+servico:servicoAtual,
+data,
+ultimaVisita:new Date().toLocaleDateString()
+});
+
+localStorage.setItem('clientes',JSON.stringify(clientes));
+
+modal.style.display='none';
+pagamento.style.display='flex';
 }
+
+// PAGAMENTO
+function pix(){pixArea.style.display='block';}
+
+function confirmarPix(){
+if(!document.getElementById('comprovante').files.length){
+alert("Envie comprovante");
+return;
+}
+pagamento.style.display='none';
+avaliacao.style.display='flex';
+}
+
+// AVALIAÇÃO
+function avaliar(n){
+nota=n;
+document.querySelectorAll('#estrelas span').forEach((e,i)=>{
+e.style.transform=i<n?'scale(1.5)':'scale(1)';
+});
+}
+
+function enviarAvaliacao(){
+window.open("https://docs.google.com/forms/d/e/1FAIpQLSdoSJA5hlioVUOURHgKh-5YrvUsNxcn69KO5YjVTcHSRXsOqg/viewform");
+location.reload();
+}
+
+// CARREGAR PACOTES
+function carregarPacotes(){
+let pacotes=JSON.parse(localStorage.getItem('pacotes'))||[];
+listaPacotes.innerHTML='';
+pacotes.forEach(p=>{
+listaPacotes.innerHTML+=`<div class="bg-[#033] p-2 mb-2 rounded">${p}</div>`;
+});
+}
+
+carregarPacotes();
 </script>
 
 </body>
