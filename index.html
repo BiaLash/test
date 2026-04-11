@@ -3,247 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bia Hair</title>
+<title>Bia Hair Premium</title>
 <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+.star { transition: 0.2s; }
+.star:hover { transform: scale(1.3); }
+</style>
+
 </head>
 
-<body class="bg-[#021B1A] text-white font-sans">
+<body class="bg-pink-50 font-sans">
 
-<!-- BOTÃO ADMIN -->
-<button onclick="toggleAdmin()" 
-class="fixed left-3 top-1/2 -translate-y-1/2 bg-yellow-400 text-black px-3 py-2 rounded-full z-50">
-⚙️
+<!-- BOTÃO ADM -->
+<button onclick="toggleADM()" class="fixed left-4 top-4 bg-black text-white px-4 py-2 rounded-full z-50">
+⚙️ ADM
 </button>
 
-<!-- ADMIN -->
-<div id="adminPanel" class="hidden fixed left-0 top-0 h-full w-72 bg-black p-4 overflow-y-auto z-40">
+<!-- PAINEL ADM -->
+<div id="adm" class="hidden fixed left-0 top-0 h-full w-80 bg-white shadow-xl p-4 overflow-y-auto z-40">
 
-<h2 class="text-yellow-400 text-xl mb-4">ADM</h2>
+<h2 class="font-bold text-xl mb-4">Painel Admin</h2>
 
-<input id="senhaInput" type="password" placeholder="Senha" class="w-full p-2 mb-3 text-black">
-<button onclick="login()" class="w-full mb-3 bg-blue-500 p-2">Entrar</button>
+<button onclick="addServico()" class="bg-green-500 text-white p-2 w-full mb-2 rounded">+ Serviço</button>
+<button onclick="addPacote()" class="bg-blue-500 text-white p-2 w-full mb-2 rounded">+ Pacote</button>
 
-<div id="adminConteudo" class="hidden">
+<h3 class="mt-4 font-bold">Clientes</h3>
+<ul id="clientes"></ul>
 
-<button onclick="verClientes()" class="w-full mb-2 bg-gray-800 p-2">Clientes</button>
-<button onclick="configPacote()" class="w-full mb-2 bg-gray-800 p-2">Pacotes</button>
-<button onclick="trocarSenha()" class="w-full mb-2 bg-gray-800 p-2">Senha</button>
-
-<div id="conteudoInterno" class="mt-4 text-sm"></div>
-
-</div>
 </div>
 
 <!-- HEADER -->
 <header class="text-center py-10">
-<img src="logo.png" class="mx-auto w-24 mb-4">
-<h1 class="text-4xl font-bold">Bia Hair</h1>
+<h1 class="text-4xl font-bold">Bia Hair Premium</h1>
+<p class="text-gray-600">Beleza de alto padrão</p>
 </header>
 
 <!-- SERVIÇOS -->
-<section class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
-
-<div onclick="abrirFotos('Corte')" class="bg-[#033] p-4 rounded">Corte</div>
-<div onclick="abrirFotos('Escova')" class="bg-[#033] p-4 rounded">Escova</div>
-<div onclick="abrirFotos('Babyliss')" class="bg-[#033] p-4 rounded">Babyliss</div>
-<div onclick="abrirFotos('Longo')" class="bg-[#033] p-4 rounded">Cabelo Longo</div>
-
-</section>
+<div id="servicos" class="grid grid-cols-2 gap-4 p-4"></div>
 
 <!-- PACOTES -->
-<section class="p-6">
-<h2 class="text-xl mb-4">Pacotes</h2>
-<div id="listaPacotes"></div>
-</section>
+<div id="pacotes" class="p-4"></div>
 
 <!-- MODAL FOTOS -->
-<div id="fotos" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
-<div class="bg-white text-black p-6 rounded">
+<div id="fotos" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center">
+<div class="bg-white p-4 rounded-xl">
 <button onclick="fecharFotos()">X</button>
-<h2 id="titulo"></h2>
-
 <div class="grid grid-cols-2 gap-2">
 <img src="foto1.jpg">
 <img src="foto2.jpg">
 <img src="foto3.jpg">
 <img src="foto4.jpg">
 </div>
-
-<button onclick="irAgendar()" class="bg-blue-500 text-white p-2 mt-2 w-full">Agendar</button>
-</div>
-</div>
-
-<!-- AGENDAR -->
-<div id="modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
-<div class="bg-white text-black p-6 rounded">
-<input id="nome" placeholder="Nome" class="border p-2 w-full mb-2">
-<input id="data" type="date" class="border p-2 w-full mb-2">
-<button onclick="enviar()" class="bg-blue-500 text-white p-2 w-full">Continuar</button>
+<button onclick="irPagamento()" class="bg-pink-500 text-white p-2 w-full mt-2">Continuar</button>
 </div>
 </div>
 
 <!-- PAGAMENTO -->
-<div id="pagamento" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
-<div class="bg-white text-black p-6 rounded">
+<div id="pagamento" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center">
+<div class="bg-white p-4 rounded-xl w-80">
 
 <h2>Pagamento</h2>
 
-<button onclick="pix()">Pix</button>
-<button onclick="alert('Pagar no local')">Dinheiro</button>
-<button onclick="alert('Pagar no local')">Cartão</button>
+<button onclick="pix()" class="bg-green-500 text-white p-2 w-full mb-2">Pix</button>
+<button onclick="alert('Pagar no local')" class="bg-blue-500 text-white p-2 w-full mb-2">Cartão</button>
+<button onclick="alert('Pagar no local')" class="bg-yellow-500 text-white p-2 w-full">Dinheiro</button>
 
-<div id="pixArea" class="hidden mt-4">
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=josearmandocarpintero2000@gmail.com">
-<input type="file" id="comprovante">
-<button onclick="confirmarPix()">Confirmar</button>
-</div>
+<div id="qrcode" class="mt-4 text-center"></div>
 
 </div>
 </div>
 
 <!-- AVALIAÇÃO -->
-<div id="avaliacao" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
-<div class="bg-white text-black p-6 rounded text-center">
+<div id="avaliacao" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center">
+<div class="bg-white p-6 rounded-xl text-center">
 
 <h2>Avalie</h2>
 
-<div id="estrelas" class="text-3xl">
-<span onclick="avaliar(1)">⭐</span>
-<span onclick="avaliar(2)">⭐</span>
-<span onclick="avaliar(3)">⭐</span>
-<span onclick="avaliar(4)">⭐</span>
-<span onclick="avaliar(5)">⭐</span>
+<div class="flex justify-center text-3xl">
+<span class="star" onclick="avaliar(1)">⭐</span>
+<span class="star" onclick="avaliar(2)">⭐</span>
+<span class="star" onclick="avaliar(3)">⭐</span>
+<span class="star" onclick="avaliar(4)">⭐</span>
+<span class="star" onclick="avaliar(5)">⭐</span>
 </div>
-
-<button onclick="enviarAvaliacao()" class="mt-4 bg-green-500 text-white p-2 w-full">
-Enviar
-</button>
 
 </div>
 </div>
 
 <script>
-let servicoAtual='';
-let nota=0;
 
-// ADMIN
-let senhaAdmin = localStorage.getItem('senhaAdmin') || "1234";
+let servicos = JSON.parse(localStorage.getItem("servicos")) || [
+{nome:"Escova", preco:75},
+{nome:"Corte", preco:80}
+];
 
-function toggleAdmin(){
-adminPanel.classList.toggle('hidden');
-}
+let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 
-function login(){
-if(senhaInput.value===senhaAdmin){
-adminConteudo.classList.remove('hidden');
-senhaInput.style.display='none';
-}else alert("Senha errada");
-}
+function render(){
+let s = document.getElementById("servicos");
+s.innerHTML = "";
 
-// CLIENTES
-function verClientes(){
-let clientes=JSON.parse(localStorage.getItem('clientes'))||[];
-let html="";
-clientes.forEach(c=>{
-html+=`<div class="bg-gray-800 p-2 mb-2">
-<b>${c.nome}</b><br>${c.servico}<br>${c.data}<br>Última: ${c.ultimaVisita}
-</div>`;
-});
-conteudoInterno.innerHTML=html;
-}
-
-// PACOTES
-function configPacote(){
-let pacotes=JSON.parse(localStorage.getItem('pacotes'))||[];
-let html="";
-pacotes.forEach(p=>html+=`<div class="bg-gray-800 p-2 mb-2">${p}</div>`);
-html+=`<input id="novoPacote" class="text-black w-full mb-2"><button onclick="addPacote()">Add</button>`;
-conteudoInterno.innerHTML=html;
-}
-
-function addPacote(){
-let p=document.getElementById('novoPacote').value;
-let pacotes=JSON.parse(localStorage.getItem('pacotes'))||[];
-pacotes.push(p);
-localStorage.setItem('pacotes',JSON.stringify(pacotes));
-configPacote();
-carregarPacotes();
-}
-
-// SENHA
-function trocarSenha(){
-conteudoInterno.innerHTML=`<input id="novaSenha" class="text-black w-full"><button onclick="salvarSenha()">Salvar</button>`;
-}
-
-function salvarSenha(){
-localStorage.setItem('senhaAdmin',document.getElementById('novaSenha').value);
-alert("Senha alterada");
-}
-
-// SERVIÇOS
-function abrirFotos(s){
-servicoAtual=s;
-titulo.innerText=s;
-fotos.style.display='flex';
-}
-function fecharFotos(){fotos.style.display='none';}
-function irAgendar(){fecharFotos();modal.style.display='flex';}
-
-// AGENDAR
-function enviar(){
-let nome=document.getElementById('nome').value;
-let data=document.getElementById('data').value;
-
-let clientes=JSON.parse(localStorage.getItem('clientes'))||[];
-
-clientes.push({
-nome,
-servico:servicoAtual,
-data,
-ultimaVisita:new Date().toLocaleDateString()
+servicos.forEach((srv,i)=>{
+s.innerHTML += `
+<div class="bg-white p-4 rounded shadow">
+<h3>${srv.nome}</h3>
+<p>R$ ${srv.preco}</p>
+<button onclick="abrirFotos(${i})" class="bg-pink-500 text-white p-2 mt-2 w-full">Agendar</button>
+</div>
+`;
 });
 
-localStorage.setItem('clientes',JSON.stringify(clientes));
-
-modal.style.display='none';
-pagamento.style.display='flex';
+let c = document.getElementById("clientes");
+c.innerHTML = clientes.map(c=>`<li>${c.nome} - ${c.data}</li>`).join("");
 }
 
-// PAGAMENTO
-function pix(){pixArea.style.display='block';}
-
-function confirmarPix(){
-if(!document.getElementById('comprovante').files.length){
-alert("Envie comprovante");
-return;
-}
-pagamento.style.display='none';
-avaliacao.style.display='flex';
+function abrirFotos(i){
+window.servicoAtual = servicos[i];
+document.getElementById("fotos").classList.remove("hidden");
 }
 
-// AVALIAÇÃO
+function fecharFotos(){
+document.getElementById("fotos").classList.add("hidden");
+}
+
+function irPagamento(){
+fecharFotos();
+document.getElementById("pagamento").classList.remove("hidden");
+}
+
+function pix(){
+let chave = "josearmandocarpintero2000@gmail.com";
+
+let url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PIX:${chave}`;
+
+document.getElementById("qrcode").innerHTML = `<img src="${url}">`;
+}
+
 function avaliar(n){
-nota=n;
-document.querySelectorAll('#estrelas span').forEach((e,i)=>{
-e.style.transform=i<n?'scale(1.5)':'scale(1)';
-});
-}
-
-function enviarAvaliacao(){
-window.open("https://docs.google.com/forms/d/e/1FAIpQLSdoSJA5hlioVUOURHgKh-5YrvUsNxcn69KO5YjVTcHSRXsOqg/viewform");
+alert("Obrigado pela avaliação " + n);
+document.getElementById("avaliacao").classList.add("hidden");
 location.reload();
 }
 
-// CARREGAR PACOTES
-function carregarPacotes(){
-let pacotes=JSON.parse(localStorage.getItem('pacotes'))||[];
-listaPacotes.innerHTML='';
-pacotes.forEach(p=>{
-listaPacotes.innerHTML+=`<div class="bg-[#033] p-2 mb-2 rounded">${p}</div>`;
-});
+function toggleADM(){
+document.getElementById("adm").classList.toggle("hidden");
 }
 
-carregarPacotes();
+function addServico(){
+let nome = prompt("Nome");
+let preco = prompt("Preço");
+servicos.push({nome,preco});
+localStorage.setItem("servicos", JSON.stringify(servicos));
+render();
+}
+
+function addPacote(){
+alert("Pacote adicionado manualmente depois");
+}
+
+render();
+
 </script>
 
 </body>
