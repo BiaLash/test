@@ -7,13 +7,13 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-.star { transition: 0.2s; }
+.star { transition: 0.2s; cursor:pointer; }
 .star:hover { transform: scale(1.3); }
 </style>
 
 </head>
 
-<body class="bg-pink-50 font-sans">
+<body class="bg-pink-50 font-sans text-gray-800">
 
 <!-- BOTÃO ADM -->
 <button onclick="toggleADM()" class="fixed left-4 top-4 bg-black text-white px-4 py-2 rounded-full z-50">
@@ -26,7 +26,13 @@
 <h2 class="font-bold text-xl mb-4">Painel Admin</h2>
 
 <button onclick="addServico()" class="bg-green-500 text-white p-2 w-full mb-2 rounded">+ Serviço</button>
-<button onclick="addPacote()" class="bg-blue-500 text-white p-2 w-full mb-2 rounded">+ Pacote</button>
+<button onclick="addPacote()" class="bg-blue-500 text-white p-2 w-full mb-4 rounded">+ Pacote</button>
+
+<h3 class="font-bold mt-4">Serviços</h3>
+<ul id="listaServicos"></ul>
+
+<h3 class="font-bold mt-4">Pacotes</h3>
+<ul id="listaPacotes"></ul>
 
 <h3 class="mt-4 font-bold">Clientes</h3>
 <ul id="clientes"></ul>
@@ -35,6 +41,7 @@
 
 <!-- HEADER -->
 <header class="text-center py-10">
+<img src="logo.png" class="mx-auto mb-4 w-24">
 <h1 class="text-4xl font-bold">Bia Hair Premium</h1>
 <p class="text-gray-600">Beleza de alto padrão</p>
 </header>
@@ -46,39 +53,47 @@
 <div id="pacotes" class="p-4"></div>
 
 <!-- MODAL FOTOS -->
-<div id="fotos" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center">
-<div class="bg-white p-4 rounded-xl">
-<button onclick="fecharFotos()">X</button>
+<div id="fotos" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+<div class="bg-white p-6 rounded-xl w-80 relative">
+
+<button onclick="fecharFotos()" class="absolute top-2 right-3 text-xl">✖</button>
+
+<h2 id="tituloServico" class="text-center font-bold mb-3"></h2>
+
 <div class="grid grid-cols-2 gap-2">
-<img src="foto1.jpg">
-<img src="foto2.jpg">
-<img src="foto3.jpg">
-<img src="foto4.jpg">
+<img src="foto1.jpg" class="rounded">
+<img src="foto2.jpg" class="rounded">
+<img src="foto3.jpg" class="rounded">
+<img src="foto4.jpg" class="rounded">
 </div>
-<button onclick="irPagamento()" class="bg-pink-500 text-white p-2 w-full mt-2">Continuar</button>
+
+<button onclick="irPagamento()" class="bg-pink-500 text-white p-2 w-full mt-3 rounded">
+Continuar
+</button>
+
 </div>
 </div>
 
 <!-- PAGAMENTO -->
-<div id="pagamento" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center">
-<div class="bg-white p-4 rounded-xl w-80">
+<div id="pagamento" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+<div class="bg-white p-6 rounded-xl w-80 text-center">
 
-<h2>Pagamento</h2>
+<h2 class="font-bold mb-3">Forma de pagamento</h2>
 
-<button onclick="pix()" class="bg-green-500 text-white p-2 w-full mb-2">Pix</button>
-<button onclick="alert('Pagar no local')" class="bg-blue-500 text-white p-2 w-full mb-2">Cartão</button>
-<button onclick="alert('Pagar no local')" class="bg-yellow-500 text-white p-2 w-full">Dinheiro</button>
+<button onclick="pagarPix()" class="bg-green-500 text-white p-2 w-full mb-2 rounded">Pix</button>
+<button onclick="pagarLocal('Cartão')" class="bg-blue-500 text-white p-2 w-full mb-2 rounded">Cartão</button>
+<button onclick="pagarLocal('Dinheiro')" class="bg-yellow-500 text-white p-2 w-full rounded">Dinheiro</button>
 
-<div id="qrcode" class="mt-4 text-center"></div>
+<div id="qrcode" class="mt-4"></div>
 
 </div>
 </div>
 
 <!-- AVALIAÇÃO -->
-<div id="avaliacao" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center">
+<div id="avaliacao" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50">
 <div class="bg-white p-6 rounded-xl text-center">
 
-<h2>Avalie</h2>
+<h2 class="mb-3 font-bold">Avalie nosso atendimento</h2>
 
 <div class="flex justify-center text-3xl">
 <span class="star" onclick="avaliar(1)">⭐</span>
@@ -98,9 +113,19 @@ let servicos = JSON.parse(localStorage.getItem("servicos")) || [
 {nome:"Corte", preco:80}
 ];
 
+let pacotes = JSON.parse(localStorage.getItem("pacotes")) || [];
+
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
 
+function salvar(){
+localStorage.setItem("servicos", JSON.stringify(servicos));
+localStorage.setItem("pacotes", JSON.stringify(pacotes));
+localStorage.setItem("clientes", JSON.stringify(clientes));
+}
+
 function render(){
+
+// SERVIÇOS
 let s = document.getElementById("servicos");
 s.innerHTML = "";
 
@@ -109,17 +134,105 @@ s.innerHTML += `
 <div class="bg-white p-4 rounded shadow">
 <h3>${srv.nome}</h3>
 <p>R$ ${srv.preco}</p>
-<button onclick="abrirFotos(${i})" class="bg-pink-500 text-white p-2 mt-2 w-full">Agendar</button>
+<button onclick="abrirFotos(${i}, 'servico')" class="bg-pink-500 text-white p-2 mt-2 w-full rounded">Agendar</button>
 </div>
 `;
 });
 
-let c = document.getElementById("clientes");
-c.innerHTML = clientes.map(c=>`<li>${c.nome} - ${c.data}</li>`).join("");
+// PACOTES
+let p = document.getElementById("pacotes");
+p.innerHTML = "<h2 class='text-xl font-bold mb-2'>Pacotes</h2>";
+
+pacotes.forEach((pac,i)=>{
+p.innerHTML += `
+<div class="bg-white p-4 rounded shadow mb-2">
+<h3>${pac.nome}</h3>
+<p>R$ ${pac.preco}</p>
+<button onclick="abrirFotos(${i}, 'pacote')" class="bg-blue-500 text-white p-2 mt-2 w-full rounded">Agendar</button>
+</div>
+`;
+});
+
+// ADM LISTAS
+document.getElementById("listaServicos").innerHTML =
+servicos.map((s,i)=>`
+<li class="flex justify-between">
+${s.nome} - R$${s.preco}
+<div>
+<button onclick="editarServico(${i})">✏️</button>
+<button onclick="removerServico(${i})">❌</button>
+</div>
+</li>
+`).join("");
+
+document.getElementById("listaPacotes").innerHTML =
+pacotes.map((p,i)=>`
+<li class="flex justify-between">
+${p.nome} - R$${p.preco}
+<div>
+<button onclick="editarPacote(${i})">✏️</button>
+<button onclick="removerPacote(${i})">❌</button>
+</div>
+</li>
+`).join("");
+
+document.getElementById("clientes").innerHTML =
+clientes.map(c=>`<li>${c.nome} - ${c.data}</li>`).join("");
+
 }
 
-function abrirFotos(i){
-window.servicoAtual = servicos[i];
+// CRUD SERVIÇOS
+function addServico(){
+let nome = prompt("Nome:");
+let preco = prompt("Preço:");
+if(!nome || !preco) return;
+servicos.push({nome,preco});
+salvar(); render();
+}
+
+function editarServico(i){
+let nome = prompt("Nome:", servicos[i].nome);
+let preco = prompt("Preço:", servicos[i].preco);
+servicos[i] = {nome,preco};
+salvar(); render();
+}
+
+function removerServico(i){
+if(confirm("Remover?")){
+servicos.splice(i,1);
+salvar(); render();
+}
+}
+
+// CRUD PACOTES
+function addPacote(){
+let nome = prompt("Nome:");
+let preco = prompt("Preço:");
+if(!nome || !preco) return;
+pacotes.push({nome,preco});
+salvar(); render();
+}
+
+function editarPacote(i){
+let nome = prompt("Nome:", pacotes[i].nome);
+let preco = prompt("Preço:", pacotes[i].preco);
+pacotes[i] = {nome,preco};
+salvar(); render();
+}
+
+function removerPacote(i){
+if(confirm("Remover?")){
+pacotes.splice(i,1);
+salvar(); render();
+}
+}
+
+// FLUXO
+function abrirFotos(i,tipo){
+window.tipo = tipo;
+window.indexAtual = i;
+document.getElementById("tituloServico").innerText =
+tipo === 'servico' ? servicos[i].nome : pacotes[i].nome;
 document.getElementById("fotos").classList.remove("hidden");
 }
 
@@ -132,34 +245,43 @@ fecharFotos();
 document.getElementById("pagamento").classList.remove("hidden");
 }
 
-function pix(){
+// PAGAMENTO
+function pagarPix(){
 let chave = "josearmandocarpintero2000@gmail.com";
-
 let url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PIX:${chave}`;
 
-document.getElementById("qrcode").innerHTML = `<img src="${url}">`;
+document.getElementById("qrcode").innerHTML =
+`<p>Escaneie:</p><img src="${url}" class="mx-auto"> 
+<button onclick="confirmar()" class="bg-green-500 text-white p-2 w-full mt-2 rounded">Já paguei</button>`;
 }
 
+function pagarLocal(tipo){
+alert("Pagamento no local: " + tipo);
+confirmar();
+}
+
+// FINAL
+function confirmar(){
+document.getElementById("pagamento").classList.add("hidden");
+
+let nome = prompt("Seu nome:");
+let data = new Date().toLocaleDateString();
+
+clientes.push({nome,data});
+salvar();
+
+document.getElementById("avaliacao").classList.remove("hidden");
+}
+
+// AVALIAÇÃO
 function avaliar(n){
-alert("Obrigado pela avaliação " + n);
-document.getElementById("avaliacao").classList.add("hidden");
+alert("Obrigado pela avaliação ⭐");
 location.reload();
 }
 
+// ADM
 function toggleADM(){
 document.getElementById("adm").classList.toggle("hidden");
-}
-
-function addServico(){
-let nome = prompt("Nome");
-let preco = prompt("Preço");
-servicos.push({nome,preco});
-localStorage.setItem("servicos", JSON.stringify(servicos));
-render();
-}
-
-function addPacote(){
-alert("Pacote adicionado manualmente depois");
 }
 
 render();
